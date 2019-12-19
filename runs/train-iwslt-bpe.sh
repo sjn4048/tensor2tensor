@@ -20,6 +20,7 @@ TRAIN_DIR=./checkpoints/${exp_name}
 mkdir -p $TRAIN_DIR
 
 python ${binFile}/t2t-trainer \
+  --schedule=train \
   --t2t_usr_dir=./usr \
   --data_dir=${DATA_DIR} \
   --output_dir=${TRAIN_DIR} \
