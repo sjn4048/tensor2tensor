@@ -1498,6 +1498,15 @@ def transformer_base():
 
 
 @registry.register_hparams
+def transformer_baseline():
+    """Base parameters for SJN baseline model."""
+    hparams = transformer_base()
+    hparams.hidden_size = 256
+    hparams.filter_size = 1024
+    hparams.num_hidden_layers = 5
+    return hparams
+
+@registry.register_hparams
 def transformer_big():
   """HParams for transformer big model on WMT."""
   hparams = transformer_base()
