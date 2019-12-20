@@ -25,11 +25,11 @@ python ${binFile}/t2t-trainer \
   --data_dir=${DATA_DIR} \
   --output_dir=${TRAIN_DIR} \
   --problem=${problem} \
+  --problem=${problem} \
   --model=${model} \
   --hparams_set=${hparams_set} \
   --worker_gpu=$gpu \
   --hparams=$hparams \
   --keep_checkpoint_max=1000 \
   --train_steps=$steps \
-  --save_checkpoints_secs=360000 \
   --save_checkpoints_steps=1000 2>&1 | tee $TRAIN_DIR/log.txt
