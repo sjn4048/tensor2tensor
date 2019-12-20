@@ -5,7 +5,7 @@ model=transformer
 hparams_set=${hparams_set}
 exp_name=${exp_name}
 hparams=${hparams:-}
-decode_hparams=${decode_hparams:-"beam_size=4,alpha=1,batch_size=800,decode_to_file=output.en,log_results=False"}
+decode_hparams=${decode_hparams:-"beam_size=4,alpha=1,batch_size=800,log_results=False"}
 gpu=${gpu:-1}
 
 data=${data:-iwslt14.tokenized.de-en}
@@ -22,5 +22,5 @@ python ${binFile}/t2t-decoder \
   --hparams_set=${hparams_set} \
   --output_dir=${TRAIN_DIR} \
   --decode_hparams=${decode_hparams} \
-  --decode_to_file="./checkpoints/${exp_name}" \
+  --decode_to_file="./checkpoints/${exp_name}/output.en" \
   --worker_gpu=1
