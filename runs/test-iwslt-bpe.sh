@@ -5,7 +5,7 @@ model=transformer
 hparams_set=${hparams_set}
 exp_name=${exp_name}
 hparams=${hparams:-}
-decode_hparams=${decode_hparams:-"beam_size=4,alpha=1,batch_size=800"}
+decode_hparams=${decode_hparams:-"beam_size=4,alpha=1,batch_size=800,output_filename=output.en,log_results=False"}
 gpu=${gpu:-1}
 
 data=${data:-iwslt14.tokenized.de-en}

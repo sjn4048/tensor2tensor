@@ -22,3 +22,7 @@ dist/
 
 # Other
 *.DS_Store
+
+# data and checkpoints
+data/
+checkpoints/

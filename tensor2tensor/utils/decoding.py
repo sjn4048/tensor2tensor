@@ -93,41 +93,15 @@ def log_decode_results(inputs,
                        identity_output=False,
                        log_results=True):
   """Log inference results."""
-
-  # TODO(lukaszkaiser) refactor this into feature_encoder
-  is_video = "video" in problem_name or "gym" in problem_name
-  if is_video:
-    def fix_and_save_video(vid, prefix):
-      save_path_template = os.path.join(
-          output_dir,
-          "%s_%s_%05d_{:05d}.png" % (problem_name, prefix, prediction_idx))
-      # this is only required for predictions
-      if vid.shape[-1] == 1:
-        vid = np.squeeze(vid, axis=-1)
-      save_video(vid, save_path_template)
-    tf.logging.info("Saving video: {}".format(prediction_idx))
-    fix_and_save_video(inputs, "inputs")
-    fix_and_save_video(outputs, "outputs")
-    fix_and_save_video(targets, "targets")
-
-  is_image = "image" in problem_name
-  is_text2class = isinstance(registry.problem(problem_name),
-                             text_problems.Text2ClassProblem)
-  skip_eos_postprocess = is_image or is_text2class
-
   decoded_inputs = None
-  if is_image and save_images:
-    save_path = os.path.join(
-        output_dir, "%s_prediction_%d.jpg" % (problem_name, prediction_idx))
-    show_and_save_image(inputs / 255., save_path)
-  elif inputs_vocab:
+  if inputs_vocab:
     if identity_output:
       decoded_inputs = " ".join(map(str, inputs.flatten()))
     else:
       decoded_inputs = inputs_vocab.decode(_save_until_eos(
-          inputs, skip_eos_postprocess))
+          inputs, False))
 
-    if log_results and not is_video:
+    if log_results:
       tf.logging.info("Inference results INPUT: %s" % decoded_inputs)
 
   decoded_targets = None
@@ -138,13 +112,12 @@ def log_decode_results(inputs,
       decoded_targets = " ".join(map(str, targets.flatten()))
   else:
     decoded_outputs = targets_vocab.decode(_save_until_eos(
-        outputs, skip_eos_postprocess))
+        outputs, False))
     if targets is not None and log_results:
       decoded_targets = targets_vocab.decode(_save_until_eos(
-          targets, skip_eos_postprocess))
-  if not is_video:
-    tf.logging.info("Inference results OUTPUT: %s" % decoded_outputs)
-  if targets is not None and log_results and not is_video:
+          targets, False))
+  tf.logging.info("Inference results OUTPUT: %s" % decoded_outputs)
+  if targets is not None and log_results:
     tf.logging.info("Inference results TARGET: %s" % decoded_targets)
   return decoded_inputs, decoded_outputs, decoded_targets
 
