@@ -11,7 +11,7 @@ librosa
 tqdm
 jiwer
 pandas
-numpy
+numpy==1.16.4
 textgrid
 praat-parselmouth
 soundfile
