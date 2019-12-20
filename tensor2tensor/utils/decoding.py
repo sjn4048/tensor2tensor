@@ -113,10 +113,12 @@ def log_decode_results(inputs,
   else:
     decoded_outputs = targets_vocab.decode(_save_until_eos(
         outputs, False))
-    if targets is not None and log_results:
-      decoded_targets = targets_vocab.decode(_save_until_eos(
-          targets, False))
-  tf.logging.info("Inference results OUTPUT: %s" % decoded_outputs)
+    decoded_targets = targets_vocab.decode(_save_until_eos(
+        targets, False))
+    decoded_outputs = decoded_outputs.replace('@@ ', '')
+    decoded_targets = decoded_targets.replace('@@ ', '')
+  if log_results:
+    tf.logging.info("Inference results OUTPUT: %s" % decoded_outputs)
   if targets is not None and log_results:
     tf.logging.info("Inference results TARGET: %s" % decoded_targets)
   return decoded_inputs, decoded_outputs, decoded_targets
@@ -294,8 +296,7 @@ def decode_once(estimator,
         target_file.write(str(d_target) + decode_hp.delimiter)
         input_file.write(str(d_input) + decode_hp.delimiter)
 
-    if (decode_hp.num_samples >= 0 and
-        num_predictions >= decode_hp.num_samples):
+    if 0 <= decode_hp.num_samples <= num_predictions:
       break
 
   if decode_to_file:
