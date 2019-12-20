@@ -25,7 +25,6 @@ python ${binFile}/t2t-trainer \
   --data_dir=${DATA_DIR} \
   --output_dir=${TRAIN_DIR} \
   --problem=${problem} \
-  --problem=${problem} \
   --model=${model} \
   --hparams_set=${hparams_set} \
   --worker_gpu=$gpu \
