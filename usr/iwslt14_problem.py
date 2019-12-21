@@ -63,9 +63,9 @@ class TranslateDeEnIwslt(translate.TranslateProblem):
   def oov_token(self):
     return "UNK"
 
-  @property
-  def vocab_filename(self):
-    return "vocab.31719.subwords"
+  # @property
+  # def vocab_filename(self):
+  #   return "vocab.31719.subwords"
 
   def generate_samples(self, data_dir, tmp_dir, dataset_split):
     """Instance of token generator for the IWSLT de->en task, training set."""
