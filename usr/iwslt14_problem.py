@@ -63,10 +63,30 @@ class TranslateDeEnIwslt(translate.TranslateProblem):
   def oov_token(self):
     return "UNK"
 
-  def vocab_data_files(self):
-    """Files to be passed to get_or_generate_vocab."""
-    return [['None', ('train.en', 'train.de')]]
+  def generate_text_for_vocab(self, data_dir, tmp_dir):
+    def generate_lines_for_vocab_fn(data_dir, source, file_byte_budget=1e6):
+      tf.logging.info("Generating vocab from: %s", str(source))
+      for lang_file in source:
+        tf.logging.info("Reading file: %s" % lang_file)
+        filepath = os.path.join(data_dir, lang_file)
 
+        with tf.gfile.GFile(filepath, mode="r") as source_file:
+          file_byte_budget_ = file_byte_budget
+          counter = 0
+          countermax = int(source_file.size() / file_byte_budget_ / 2)
+          for line in source_file:
+            if counter < countermax:
+              counter += 1
+            else:
+              if file_byte_budget_ <= 0:
+                break
+              line = line.strip()
+              file_byte_budget_ -= len(line)
+              counter = 0
+              yield line
+
+    return generate_lines_for_vocab_fn(data_dir,
+                                       ('train.en', 'train.de'))
   def generate_samples(self, data_dir, tmp_dir, dataset_split):
     """Instance of token generator for the IWSLT de->en task, training set."""
     train = dataset_split == problem.DatasetSplit.TRAIN
