@@ -63,6 +63,10 @@ class TranslateDeEnIwslt(translate.TranslateProblem):
   def oov_token(self):
     return "UNK"
 
+  def vocab_data_files(self):
+    """Files to be passed to get_or_generate_vocab."""
+    return ('train.en', 'train.de')
+
   def generate_samples(self, data_dir, tmp_dir, dataset_split):
     """Instance of token generator for the IWSLT de->en task, training set."""
     train = dataset_split == problem.DatasetSplit.TRAIN
