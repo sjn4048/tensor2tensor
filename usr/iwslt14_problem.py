@@ -63,21 +63,12 @@ class TranslateDeEnIwslt(translate.TranslateProblem):
   def oov_token(self):
     return "UNK"
 
-  # @property
-  # def vocab_filename(self):
-  #   return "vocab.31719.subwords"
-
   def generate_samples(self, data_dir, tmp_dir, dataset_split):
     """Instance of token generator for the IWSLT de->en task, training set."""
     train = dataset_split == problem.DatasetSplit.TRAIN
     dataset_path = ("train"
                     if train else "test")
     train_path = _get_iwslt_deen_bpe_dataset(data_dir, dataset_path)
-
-    # Vocab
-    vocab_path = os.path.join(data_dir, self.vocab_filename)
-    if not tf.gfile.Exists(vocab_path):
-      raise NotImplementedError()
 
     return text_problems.text2text_txt_iterator(train_path + ".de",
                                                 train_path + ".en")
