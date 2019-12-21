@@ -1,7 +1,7 @@
 echo 'Start Training&Evaluating IWSLT14-De-En'
 export PYTHONPATH=./:${PYTHONPATH}
 binFile=./tensor2tensor/bin
-problem=translate_ende_wmt32k
+problem=${problem:-translate_ende_wmt32k}
 model=transformer
 hparams_set=${hparams_set}
 exp_name=${exp_name}
