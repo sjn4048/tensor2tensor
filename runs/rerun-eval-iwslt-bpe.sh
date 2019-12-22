@@ -27,26 +27,8 @@ mkdir -p $LOG_DIR
 
 for ((steps = eval_every; steps <= max_steps; steps += eval_every))
 do
-  output_filename=${EVAL_DIR}/output_${steps}.txt
-  if [ -f "$output_filename" ]; then
-    echo "$output_filename exist."
-    continue
-  fi
-
-  touch output_filename
-  python ${binFile}/t2t-trainer \
-    --t2t_usr_dir=./usr \
-    --data_dir=${DATA_DIR} \
-    --schedule=train \
-    --output_dir=${TRAIN_DIR} \
-    --problem=${problem} \
-    --model=${model} \
-    --hparams_set=${hparams_set} \
-    --worker_gpu=${gpu} \
-    --hparams=${hparams} \
-    --keep_checkpoint_max=1000 \
-    --train_steps=${steps} \
-    --keep_checkpoint_max=1000 \ 2>&1 | tee $LOG_DIR/${steps}.txt
+  fl="model_checkpoint_path: \"model.ckpt-${steps}\""
+  sed -i "1s/.*/${fl}/" ${TRAIN_DIR}/checkpoint
 
   python ${binFile}/t2t-decoder \
     --t2t_usr_dir=./usr \
@@ -58,6 +40,7 @@ do
     --output_dir=${TRAIN_DIR} \
     --decode_hparams=${decode_hparams} \
     --decode_to_file="./checkpoints/${exp_name}/evals/${steps}" \
+    --decode_from_file=${DATA_DIR}/test.de
     --worker_gpu=1
 
 #  perl multi-bleu.perl "${DATA_DIR}/target.en" <  "${EVAL_DIR}/output_${steps}.txt" 2>&1 | tee ${EVAL_DIR}/bleu_${steps}.txt
