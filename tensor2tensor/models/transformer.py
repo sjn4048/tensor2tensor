@@ -43,6 +43,7 @@ import tensorflow as tf
 
 from tensorflow.python.ops import inplace_ops
 from tensorflow.python.util import nest
+from tensor2tensor.utils.t2t_model import _log_variable_sizes
 
 
 # Alias some commonly reused layers, here and elsewhere.
@@ -533,6 +534,7 @@ class Transformer(t2t_model.T2TModel):
     Raises:
       NotImplementedError: If there are multiple data shards.
     """
+    _log_variable_sizes(tf.trainable_variables(), f"[INFER] Trainable Variables")
     if self._num_datashards != 1:
       raise NotImplementedError("Fast decoding only supports a single shard.")
     dp = self._data_parallelism

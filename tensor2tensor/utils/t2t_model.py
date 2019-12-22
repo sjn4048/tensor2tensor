@@ -41,6 +41,7 @@ from tensor2tensor.utils import quantization
 from tensor2tensor.utils import registry
 
 import tensorflow as tf
+import numpy as np
 
 from tensorflow.python.layers import base
 from tensorflow.python.ops import inplace_ops
