@@ -11,3 +11,4 @@ do
   perl mosesdecoder/scripts/tokenizer/tokenizer.perl -l en < $target >  "${target}.tok"
 
   perl mosesdecoder/scripts/generic/multi-bleu.perl ${target}.tok < ${output}.tok
+done
