@@ -654,6 +654,7 @@ class T2TModel(base.Layer):
           "losses": a dictionary: {loss-name (string): floating point `Scalar`
       }
     """
+    _log_variable_sizes(tf.trainable_variables(), f"[INFER] Trainable Variables")
     set_custom_getter_compose(self._custom_getter)
     with self._eager_var_store.as_default():
       # TODO(rsepassi): Make decoding work with real-valued model outputs

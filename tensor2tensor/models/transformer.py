@@ -534,7 +534,6 @@ class Transformer(t2t_model.T2TModel):
     Raises:
       NotImplementedError: If there are multiple data shards.
     """
-    _log_variable_sizes(tf.trainable_variables(), f"[INFER] Trainable Variables")
     if self._num_datashards != 1:
       raise NotImplementedError("Fast decoding only supports a single shard.")
     dp = self._data_parallelism
