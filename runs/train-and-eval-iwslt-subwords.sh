@@ -27,7 +27,6 @@ mkdir -p $LOG_DIR
 
 for ((steps = eval_every; steps <= max_steps; steps += eval_every))
 do
-  touch output_filename
   python ${binFile}/t2t-trainer \
     --t2t_usr_dir=./usr \
     --data_dir=${DATA_DIR} \
@@ -53,6 +52,4 @@ do
     --decode_hparams=${decode_hparams} \
     --decode_to_file="./checkpoints/${exp_name}/evals/${steps}" \
     --worker_gpu=1
-
-#  perl multi-bleu.perl "${DATA_DIR}/target.en" <  "${EVAL_DIR}/output_${steps}.txt" 2>&1 | tee ${EVAL_DIR}/bleu_${steps}.txt
 done
