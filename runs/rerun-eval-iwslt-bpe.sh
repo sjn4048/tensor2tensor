@@ -30,6 +30,17 @@ do
   fl="model_checkpoint_path: \"model.ckpt-${steps}\""
   sed -i "1s/.*/${fl}/" ${TRAIN_DIR}/checkpoint
 
+t2t-decoder \
+  --data_dir=$DATA_DIR \
+  --problem=$PROBLEM \
+  --model=$MODEL \
+  --hparams_set=$HPARAMS \
+  --output_dir=$TRAIN_DIR \
+  --decode_hparams="beam_size=$BEAM_SIZE,alpha=$ALPHA" \
+  --decode_from_file=$DECODE_FILE \
+  --decode_to_file=translation.en
+
+
   python ${binFile}/t2t-decoder \
     --t2t_usr_dir=./usr \
     --data_dir=${DATA_DIR} \
@@ -40,8 +51,8 @@ do
     --output_dir=${TRAIN_DIR} \
     --decode_hparams=${decode_hparams} \
     --decode_to_file="./checkpoints/${exp_name}/evals/${steps}" \
-    --decode_from_file=${DATA_DIR}/test.de
     --worker_gpu=1
+    # --decode_from_file=${DATA_DIR}/test.de \
 
 #  perl multi-bleu.perl "${DATA_DIR}/target.en" <  "${EVAL_DIR}/output_${steps}.txt" 2>&1 | tee ${EVAL_DIR}/bleu_${steps}.txt
 done
