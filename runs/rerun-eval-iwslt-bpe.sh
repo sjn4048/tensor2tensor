@@ -30,17 +30,6 @@ do
   fl="model_checkpoint_path: \"model.ckpt-${steps}\""
   sed -i "1s/.*/${fl}/" ${TRAIN_DIR}/checkpoint
 
-t2t-decoder \
-  --data_dir=$DATA_DIR \
-  --problem=$PROBLEM \
-  --model=$MODEL \
-  --hparams_set=$HPARAMS \
-  --output_dir=$TRAIN_DIR \
-  --decode_hparams="beam_size=$BEAM_SIZE,alpha=$ALPHA" \
-  --decode_from_file=$DECODE_FILE \
-  --decode_to_file=translation.en
-
-
   python ${binFile}/t2t-decoder \
     --t2t_usr_dir=./usr \
     --data_dir=${DATA_DIR} \
