@@ -1505,6 +1505,7 @@ def transformer_baseline():
     hparams.hidden_size = 256
     hparams.filter_size = 1024
     hparams.num_hidden_layers = 5
+    hparams.num_heads = 4
     return hparams
 
 @registry.register_hparams
