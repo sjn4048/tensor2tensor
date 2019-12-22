@@ -208,7 +208,6 @@ class T2TModel(base.Layer):
 
   def call(self, inputs, **kwargs):
     del kwargs
-    _log_variable_sizes(tf.trainable_variables(), "Trainable Variables")
     features = inputs
     set_custom_getter_compose(self._custom_getter)
     tf.get_variable_scope().set_initializer(
@@ -218,6 +217,7 @@ class T2TModel(base.Layer):
       summarize_features(features, num_shards=self._num_datashards)
       sharded_features = self._shard_features(features)
       sharded_logits, losses = self.model_fn_sharded(sharded_features)
+      _log_variable_sizes(tf.trainable_variables(), "Trainable Variables")
       if isinstance(sharded_logits, dict):
         concat_logits = {}
         for k, v in six.iteritems(sharded_logits):
