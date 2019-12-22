@@ -1,7 +1,7 @@
 export PYTHONPATH=./:${PYTHONPATH}
 binFile=./tensor2tensor/bin
-problem=translate_de_en_iwslt_bpe32k
-model=transformer
+problem=${problem:-translate_de_en_iwslt_bpe32k}
+model=${model:-transformer}
 hparams_set=${hparams_set}
 exp_name=${exp_name}
 hparams=${hparams:-}
