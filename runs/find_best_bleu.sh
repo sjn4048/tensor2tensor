@@ -8,7 +8,5 @@ do
   output_filename=${EVAL_DIR}/${steps}.*.decodes
   target_filename=${EVAL_DIR}/${steps}.*.targets
   echo ${steps}:
-  if [ -f "$output_filename" ]; then
-     perl multi-bleu.perl target_filename < target_filename 2>&1 | head -n 1
-  fi
+  perl multi-bleu.perl $target_filename < $output_filename 2>&1 | head -n 1
 done
