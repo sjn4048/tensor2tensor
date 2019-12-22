@@ -207,6 +207,7 @@ class T2TModel(base.Layer):
 
   def call(self, inputs, **kwargs):
     del kwargs
+    _log_variable_sizes(tf.trainable_variables(), "Trainable Variables")
     features = inputs
     set_custom_getter_compose(self._custom_getter)
     tf.get_variable_scope().set_initializer(
@@ -1940,3 +1941,21 @@ def _create_target_modality(modality_dict):
   # (e.g., modality.target_bottom). In the future, remove need for this
   # behavior.
   return {k: v for k, v in six.iteritems(modality_dict) if "target" in k}
+
+def _log_variable_sizes(var_list, tag):
+  """Log the sizes and shapes of variables, and the total size.
+
+  Args:
+    var_list: a list of varaibles
+    tag: a string
+  """
+  name_to_var = {v.name: v for v in var_list}
+  total_size = 0
+  for v_name in sorted(list(name_to_var)):
+    v = name_to_var[v_name]
+    v_size = int(np.prod(np.array(v.shape.as_list())))
+    log_info("Weight    %s\tshape    %s\tsize    %d",
+             v.name[:-2].ljust(80),
+             str(v.shape).ljust(20), v_size)
+    total_size += v_size
+  log_info("%s Total size: %d", tag, total_size)
