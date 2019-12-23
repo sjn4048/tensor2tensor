@@ -1520,6 +1520,17 @@ def transformer_big():
 
 
 @registry.register_hparams
+def transformer_iwslt():
+  """HParams for transformer big model on WMT."""
+  hparams = transformer_base()
+  hparams.filter_size = 1024
+  hparams.hidden_size = 512
+  hparams.num_heads = 4
+  hparams.num_hidden_layers = 6
+  return hparams
+
+
+@registry.register_hparams
 def transformer_tall():
   """Hparams for transformer on LM+MNLI."""
   hparams = transformer_base()
