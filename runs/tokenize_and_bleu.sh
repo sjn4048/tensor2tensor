@@ -1,10 +1,9 @@
-max_steps=${max_steps:-200000}
+max_steps=${max_steps:-100000}
 eval_every=${eval_every:-2000}
-eval_start=${eval_start:-2000}
-
+tokenize=${tokenize:-true}
 exp_name=${exp_name}
 
-for ((steps = eval_start; steps <= max_steps; steps += eval_every))
+for ((steps = eval_every; steps <= max_steps; steps += eval_every))
 do
   target=$(ls -1L ./checkpoints/${exp_name}/evals/${steps}.*.targets)
   output=$(ls -1L ./checkpoints/${exp_name}/evals/${steps}.*.decodes)
